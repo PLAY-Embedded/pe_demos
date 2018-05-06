@@ -87,6 +87,9 @@ PROJECT = ch
 
 # Imported source files and paths
 CHIBIOS = ../../chibios176
+
+# Licensing files.
+include $(CHIBIOS)/os/license/license.mk
 # Startup files.
 include $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk/startup_stm32f4xx.mk
 # HAL-OSAL files (optional).
@@ -105,20 +108,15 @@ LDSCRIPT= $(STARTUPLD)/STM32F407xG.ld
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
-CSRC = $(STARTUPSRC) \
-       $(KERNSRC) \
-       $(PORTSRC) \
-       $(OSALSRC) \
-       $(HALSRC) \
-       $(PLATFORMSRC) \
-       $(BOARDSRC) \
+CSRC = $(ALLCSRC) \
        $(TESTSRC) \
-       $(STREAMSSRC) \
+       main.c
+
        usbcfg.c main.c
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
-CPPSRC =
+CPPSRC = $(ALLCPPSRC)
 
 # C sources to be compiled in ARM mode regardless of the global setting.
 # NOTE: Mixing ARM and THUMB mode enables the -mthumb-interwork compiler
@@ -141,12 +139,10 @@ TCSRC =
 TCPPSRC =
 
 # List ASM source files here
-ASMSRC =
-ASMXSRC = $(STARTUPASM) $(PORTASM) $(OSALASM)
+ASMSRC = $(ALLASMSRC)
+ASMXSRC = $(ALLXASMSRC)
 
-INCDIR = $(CHIBIOS)/os/license \
-         $(STARTUPINC) $(KERNINC) $(PORTINC) $(OSALINC) \
-         $(HALINC) $(PLATFORMINC) $(BOARDINC) $(TESTINC) $(STREAMSINC)
+INCDIR = $(ALLINC) $(TESTINC)
 
 #
 # Project, sources and paths
