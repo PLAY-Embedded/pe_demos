@@ -337,12 +337,12 @@
 /* Derived constants and error checks.                                       */
 /*===========================================================================*/
 
-#if !(HAL_USE_SPI)
+#if !(HAL_USE_PAL == TRUE)
 #error "RF requires HAL_USE_SPI."
 #endif
 
-#if !(HAL_USE_EXT)
-#error "RF requires HAL_USE_EXT."
+#if !((HAL_USE_PAL == TRUE) && (PAL_USE_CALLBACKS == TRUE))
+#error "RF requires HAL_USE_PAL and PAL_USE_CALLBACKS."
 #endif
 /*===========================================================================*/
 /* Driver data structures and types.                                         */
@@ -551,21 +551,13 @@ typedef struct {
 typedef struct {
 
   /**
-   * @brief The chip enable line port.
+   * @brief The chip enable line.
    */
-  ioportid_t                ceport;
+  ioline_t                  line_ce;
   /**
-   * @brief The chip enable line pad number.
+   * @brief The IRQ line.
    */
-  uint16_t                  cepad;
-  /**
-   * @brief The interrupt line port.
-   */
-  ioportid_t                irqport;
-  /**
-   * @brief The interrupt line pad number.
-   */
-  uint16_t                  irqpad;
+  ioline_t                  line_irq;
   /**
    * @brief Pointer to the SPI driver associated to this RF.
    */
@@ -574,14 +566,6 @@ typedef struct {
    * @brief Pointer to the SPI configuration .
    */
   const SPIConfig           *spicfg;
-  /**
-   * @brief Pointer to the SPI driver associated to this RF.
-   */
-  EXTDriver                 *extp;
-  /**
-   * @brief Pointer to the SPI configuration .
-   */
-  const EXTConfig           *extcfg;
   /**
    * @brief RF Transceiver auto retransmit count.
    */
@@ -684,7 +668,6 @@ extern "C" {
                      systime_t time);
   rf_msg_t rfTransmitString(RFDriver *rfp, char* sp, char* addp,
                             systime_t time);
-  void rfExtCallBack(EXTDriver *extp, expchannel_t channel);
 #if (RF_USE_MUTUAL_EXCLUSION == TRUE) || defined(__DOXYGEN__)
   void rfAcquireBus(RFDriver *rfp);
   void rfReleaseBus(RFDriver *rfp);

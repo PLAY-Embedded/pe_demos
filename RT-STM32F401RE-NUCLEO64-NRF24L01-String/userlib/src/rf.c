@@ -401,6 +401,20 @@ static uint8_t nrf24l01ReadRxPlWid(SPIDriver *spip, uint8_t *ppaylen) {
   return rxbuf[0];
 }
 
+/**
+ * @brief   This is the callback used by EXT on interrupt request.
+ *
+ * @notapi
+ */
+static void nrf24l01IRQHandler(void *arg) {
+
+  (void) arg;
+  osalSysLockFromISR();
+  cbcounter++;
+  osalEventBroadcastFlagsI(&RFD1.irq_event, RF_GENERIC_IRQ);
+  osalSysUnlockFromISR();
+}
+
 /*===========================================================================*/
 /* Driver exported functions.                                                */
 /*===========================================================================*/
@@ -448,10 +462,11 @@ void rfStart(RFDriver *rfp, RFConfig *config) {
               "rfStart(), invalid state");
   rfp->config = config;
 
-  //To do check why osal has not this call
   chEvtRegister(&rfp->irq_event, &rfp->el, 0);
-  extStart(rfp->config->extp, rfp->config->extcfg);
   spiStart(rfp->config->spip, rfp->config->spicfg);
+
+  palEnableLineEvent(rfp->config->line_irq, PAL_EVENT_MODE_FALLING_EDGE);
+  palSetLineCallback(rfp->config->line_irq, nrf24l01IRQHandler, NULL);
 
   nrf24l01Reset(rfp->config->spip);
   nrf24l01WriteRegister(rfp->config->spip, NRF24L01_AD_CONFIG,
@@ -478,7 +493,7 @@ void rfStart(RFDriver *rfp, RFConfig *config) {
   nrf24l01WriteRegister(rfp->config->spip, NRF24L01_AD_DYNPD,
                         NRF24L01_DI_DYNPD);
 
-  palClearPad(rfp->config->ceport, rfp->config->cepad);
+  palClearLine(rfp->config->line_irq);
   rfp->state = RF_READY;
 }
 
@@ -499,7 +514,6 @@ void rfStop(RFDriver *rfp) {
       nrf24l01WriteRegister(rfp->config->spip,
                             NRF24L01_AD_CONFIG, 0);
       spiStop(rfp->config->spip);
-      extStop(rfp->config->extp);
       chEvtUnregister(&rfp->irq_event, &rfp->el);
   }
   rfp->state = RF_STOP;
@@ -579,11 +593,11 @@ rf_msg_t rfReceive(RFDriver *rfp, uint32_t n, RFRxFrame *rxbuff,
   nrf24l01Reset(rfp->config->spip);
   cnt = 0;
   rfp->state = RF_RX;
-  palSetPad(rfp->config->ceport, rfp->config->cepad);
+  palSetLine(rfp->config->line_ce);
   while(cnt < n) {
     if(chEvtWaitOneTimeout(ALL_EVENTS, time) == 0) {
         rfp->state = RF_READY;
-        palClearPad(rfp->config->ceport, rfp->config->cepad);
+        palClearLine(rfp->config->line_ce);
         return RF_TIMEOUT;
     }
     status = nrf24l01GetStatus(rfp->config->spip);
@@ -600,13 +614,13 @@ rf_msg_t rfReceive(RFDriver *rfp, uint32_t n, RFRxFrame *rxbuff,
     else {
       nrf24l01Reset(rfp->config->spip);
       rfp->state = RF_READY;
-      palClearPad(rfp->config->ceport, rfp->config->cepad);
+      palClearLine(rfp->config->line_ce);
       return RF_ERROR;
     }
-    palClearPad(rfp->config->ceport, rfp->config->cepad);
+    palClearLine(rfp->config->line_ce);
   }
   rfp->state = RF_READY;
-  palClearPad(rfp->config->ceport, rfp->config->cepad);
+  palClearLine(rfp->config->line_ce);
   return RF_OK;
 }
 
@@ -654,14 +668,14 @@ rf_msg_t rfTransmit(RFDriver *rfp, uint32_t n, RFTxFrame *txbuff,
       osalDbgCheck((txbuff + cnt)->tx_paylen <= RF_PAYLEN);
       nrf24l01WriteTxPl(rfp->config->spip, (txbuff + cnt)->tx_paylen,
                         (txbuff + cnt)->tx_payload);
-      palSetPad(rfp->config->ceport, rfp->config->cepad);
+      palSetLine(rfp->config->line_ce);
       osalThreadSleepMilliseconds(1);
-      palClearPad(rfp->config->ceport, rfp->config->cepad);
+      palClearLine(rfp->config->line_ce);
       flag = FALSE;
     }
     if(chEvtWaitOneTimeout(ALL_EVENTS, time) == 0) {
       rfp->state = RF_READY;
-      palClearPad(rfp->config->ceport, rfp->config->cepad);
+      palClearLine(rfp->config->line_ce);
       return RF_TIMEOUT;
     }
     status = nrf24l01GetStatus(rfp->config->spip);
@@ -674,12 +688,12 @@ rf_msg_t rfTransmit(RFDriver *rfp, uint32_t n, RFTxFrame *txbuff,
     if (status & NRF24L01_DI_STATUS_MAX_RT) {
       nrf24l01Reset(rfp->config->spip);
       rfp->state = RF_READY;
-      palClearPad(rfp->config->ceport, rfp->config->cepad);
+      palClearLine(rfp->config->line_ce);
       return RF_ERROR;
     }
   }
   rfp->state = RF_READY;
-  palClearPad(rfp->config->ceport, rfp->config->cepad);
+  palClearLine(rfp->config->line_ce);
   return RF_OK;
 }
 
@@ -778,23 +792,6 @@ rf_msg_t rfTransmitString(RFDriver *rfp, char* sp, char* addp,
   _txframe.tx_payload[len] = '\0' ;
   msg = rfTransmit(rfp, 1, &_txframe, time);
   return msg;
-}
-
-/**
- * @brief   This is the callback used by EXT on interrupt request.
- *
- * @notapi
- */
-void rfExtCallBack(EXTDriver *extp, expchannel_t channel) {
-
-  (void) extp;
-  osalSysLockFromISR();
-  cbcounter++;
-
-  if(channel == RFD1.config->irqpad) {
-    osalEventBroadcastFlagsI(&RFD1.irq_event, RF_GENERIC_IRQ);
-  }
-  osalSysUnlockFromISR();
 }
 
 #if (RF_USE_MUTUAL_EXCLUSION == TRUE) || defined(__DOXYGEN__)

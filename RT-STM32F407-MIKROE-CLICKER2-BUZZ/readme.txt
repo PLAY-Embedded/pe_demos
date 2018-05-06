@@ -11,4 +11,4 @@ using ChibiOS/HAL".
 http://www.playembedded.org/blog/getting-started-with-mikroe-buzz-click-using-chibioshal/
 
 *** ChibiOS related version ***
-Tested under ChibiOS 17.6.x Stable
+Tested under ChibiOS 18.2.x Stable

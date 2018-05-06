@@ -22,63 +22,29 @@
 #include "rf.h"
 #include "string.h"
 
-#define  TRANSMITTER                   FALSE
+#define  TRANSMITTER                          TRUE
 
-#define  GPIOA_RF_CE                       9
-#define  GPIOC_RF_IRQ                      7
-#define  GPIOB_RF_SPID1_CS                 6
-#define  GPIOA_RF_SPID1_SCK                5
-#define  GPIOA_RF_SPID1_MISO               6
-#define  GPIOA_RF_SPID1_MOSI               7
+#define  NRF24L01_LINE_CE                     LINE_ARD_D8
+#define  NRF24L01_LINE_IRQ                    LINE_ARD_D9
+#define  NRF24L01_SPI_CS                      LINE_ARD_D10
+#define  NRF24L01_SPI_SCK                     LINE_ARD_D13
+#define  NRF24L01_SPI_MISO                    LINE_ARD_D12
+#define  NRF24L01_SPI_MOSI                    LINE_ARD_D11
 
-#define  FRAME_LEN                         5
+#define  FRAME_LEN                            5
 static const SPIConfig std_spi_cfg = {
+  FALSE,
   NULL,
-  GPIOB,                                          /*   port of CS   */
-  GPIOB_RF_SPID1_CS,                              /*   pin of CS    */
+  NRF24L01_SPI_CS,                                /*   Line of CS    */
   SPI_CR1_BR_1 | SPI_CR1_BR_0,                    /*   CR1 register */
   0                                               /*   CR2 register */
 };
 
-static const EXTConfig extcfg = {
-  {
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_FALLING_EDGE |
-     EXT_CH_MODE_AUTOSTART |
-     EXT_MODE_GPIOC, rfExtCallBack},            /* IRQ line connected to PC7 */
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL}
-  }
-};
-
 static RFConfig nrf24l01_cfg = {
-  GPIOA,
-  GPIOA_RF_CE,
-  GPIOC,
-  GPIOC_RF_IRQ,
+  NRF24L01_LINE_CE,
+  NRF24L01_LINE_IRQ,
   &SPID1,
   &std_spi_cfg,
-  &EXTD1,
-  &extcfg,
   NRF24L01_ARC_15_times,     /* auto_retr_count */
   NRF24L01_ARD_4000us,       /* auto_retr_delay */
   NRF24L01_AW_5_bytes,       /* address_width */
@@ -95,17 +61,50 @@ static RFConfig nrf24l01_cfg = {
 /* Generic code.                                                             */
 /*===========================================================================*/
 
+static char string[RF_MAX_STRLEN + 1];
+static uint32_t strl;
 
 /*
- * Green LED blinker thread, times are in milliseconds.
+ * Application entry point.
  */
-static THD_WORKING_AREA(waThread, 512);
-static THD_FUNCTION(Thread, arg) {
-  char string[RF_MAX_STRLEN + 1];
-  uint32_t strl;
-  (void)arg;
-  chRegSetThreadName("RF thread");
+int main(void) {
 
+  /*
+   * System initializations.
+   * - HAL initialization, this also initializes the configured device drivers
+   *   and performs the board-specific initializations.
+   * - Kernel initialization, the main() function becomes a thread and the
+   *   RTOS is active.
+   */
+  halInit();
+  chSysInit();
+
+  /*
+   * SPID1 I/O pins setup.(It bypasses board.h configurations)
+   */
+  palSetLineMode(NRF24L01_SPI_SCK, PAL_MODE_ALTERNATE(5) |
+                                   PAL_STM32_OSPEED_HIGHEST);
+  palSetLineMode(NRF24L01_SPI_MISO, PAL_MODE_ALTERNATE(5) |
+                                    PAL_STM32_OSPEED_HIGHEST);
+  palSetLineMode(NRF24L01_SPI_MOSI, PAL_MODE_ALTERNATE(5) |
+                                    PAL_STM32_OSPEED_HIGHEST);
+  palSetLineMode(NRF24L01_SPI_CS, PAL_MODE_OUTPUT_PUSHPULL |
+                                  PAL_STM32_OSPEED_HIGHEST);
+  /*
+   * CE and IRQ pins setup.
+   */
+  palSetLineMode(NRF24L01_LINE_CE, PAL_MODE_OUTPUT_PUSHPULL |
+                                   PAL_STM32_OSPEED_HIGHEST);
+  palSetLineMode(NRF24L01_LINE_IRQ, PAL_MODE_INPUT |
+                                    PAL_STM32_OSPEED_HIGHEST);
+
+  /* Starting Serial Driver 2 with default configurations. */
+  sdStart(&SD2, NULL);
+
+  /* RF Driver Object constructor. */
+  rfInit();
+
+  /* Starting RF driver. */
   rfStart(&RFD1, &nrf24l01_cfg);
 
   while (TRUE) {
@@ -129,7 +128,7 @@ static THD_FUNCTION(Thread, arg) {
     }
     strl = strlen(string);
     if(strl){
-      msg = rfTransmitString(&RFD1, string, "RXadd", MS2ST(75));
+      msg = rfTransmitString(&RFD1, string, "RXadd", TIME_MS2I(75));
       if(msg == RF_OK){
         chnWrite(&SD2, (const uint8_t *)"Message sent\n\r", 14);
       }
@@ -143,7 +142,7 @@ static THD_FUNCTION(Thread, arg) {
     chThdSleepMilliseconds(50);
 #else
     string[0] = '\0';
-    rfReceiveString(&RFD1, string, "RXadd", MS2ST(2));
+    rfReceiveString(&RFD1, string, "RXadd", TIME_MS2I(2));
     strl = strlen(string);
     if(strl){
       chnWrite(&SD2, (const uint8_t *)string, strl);
@@ -152,54 +151,4 @@ static THD_FUNCTION(Thread, arg) {
 #endif
   }
   rfStop(&RFD1);
-}
-
-/*
- * Application entry point.
- */
-int main(void) {
-
-  /*
-   * System initializations.
-   * - HAL initialization, this also initializes the configured device drivers
-   *   and performs the board-specific initializations.
-   * - Kernel initialization, the main() function becomes a thread and the
-   *   RTOS is active.
-   */
-  halInit();
-  chSysInit();
-  /*
-   * Application library initialization.
-   * - PLAY initialization, this also initializes the configured device drivers
-   *   and performs the board-specific initializations.
-   */
-  rfInit();
-
-  /*
-   * SPID1 I/O pins setup.(It bypasses board.h configurations)
-   */
-  palSetPadMode(GPIOA, GPIOA_RF_SPID1_SCK,
-                 PAL_MODE_ALTERNATE(5) | PAL_STM32_OSPEED_HIGHEST);   /* New SCK */
-  palSetPadMode(GPIOA, GPIOA_RF_SPID1_MISO,
-                 PAL_MODE_ALTERNATE(5) | PAL_STM32_OSPEED_HIGHEST);   /* New MISO*/
-  palSetPadMode(GPIOA, GPIOA_RF_SPID1_MOSI,
-                 PAL_MODE_ALTERNATE(5) | PAL_STM32_OSPEED_HIGHEST);   /* New MOSI*/
-  palSetPadMode(GPIOB, GPIOB_RF_SPID1_CS,
-                 PAL_MODE_OUTPUT_PUSHPULL | PAL_STM32_OSPEED_HIGHEST);/* New CS  */
-  /*
-   * CE and IRQ pins setup.
-   */
-
-  palSetPadMode(GPIOA, GPIOA_RF_CE,
-                 PAL_MODE_OUTPUT_PUSHPULL | PAL_STM32_OSPEED_HIGHEST);/* New CE  */
-  palSetPadMode(GPIOC, GPIOC_RF_IRQ,
-                 PAL_MODE_INPUT | PAL_STM32_OSPEED_HIGHEST);          /* New IRQ  */
-
-  sdStart(&SD2, NULL);
-
-  chThdCreateStatic(waThread, sizeof(waThread), NORMALPRIO, Thread, NULL);
-  while(TRUE){
-
-    chThdSleepMilliseconds(500);
-  }
 }

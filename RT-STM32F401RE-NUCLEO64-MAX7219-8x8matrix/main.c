@@ -52,16 +52,10 @@ static uint8_t presets[MAX_PRESET_NUMB][MAX_DIGITS] = {
 /* SPI related code.                                                         */
 /*===========================================================================*/
 
-#define  GPIOB_SPID1_CS                 6
-#define  GPIOA_SPID1_SCK                5
-#define  GPIOA_SPID1_MISO               6
-#define  GPIOA_SPID1_MOSI               7
-
 static const SPIConfig spicfg = {
   FALSE,
   NULL,
-  GPIOB,                                          /*   port of CS   */
-  GPIOB_SPID1_CS,                                 /*   pin of CS    */
+  LINE_ARD_D10,                                   /*   Line of CS   */
   SPI_CR1_BR | SPI_CR1_DFF,                       /*   CR1 register */
   0                                               /*   CR2 register */
 };
@@ -90,14 +84,14 @@ int main(void) {
   /*
    * SPID1 I/O pins setup.(It bypasses board.h configurations)
    */
-  palSetPadMode(GPIOA, GPIOA_SPID1_SCK,
-                PAL_MODE_ALTERNATE(5) | PAL_STM32_OSPEED_HIGHEST);   /* New SCK */
-  palSetPadMode(GPIOA, GPIOA_SPID1_MISO,
-                PAL_MODE_ALTERNATE(5) | PAL_STM32_OSPEED_HIGHEST);   /* New MISO*/
-  palSetPadMode(GPIOA, GPIOA_SPID1_MOSI,
-                PAL_MODE_ALTERNATE(5) | PAL_STM32_OSPEED_HIGHEST);   /* New MOSI*/
-  palSetPadMode(GPIOB, GPIOB_SPID1_CS,
-                PAL_MODE_OUTPUT_PUSHPULL | PAL_STM32_OSPEED_HIGHEST);/* New CS  */
+  palSetLineMode(LINE_ARD_D13, PAL_MODE_ALTERNATE(5) |
+                                   PAL_STM32_OSPEED_HIGHEST);
+  palSetLineMode(LINE_ARD_D12, PAL_MODE_ALTERNATE(5) |
+                                    PAL_STM32_OSPEED_HIGHEST);
+  palSetLineMode(LINE_ARD_D11, PAL_MODE_ALTERNATE(5) |
+                                    PAL_STM32_OSPEED_HIGHEST);
+  palSetLineMode(LINE_ARD_D10, PAL_MODE_OUTPUT_PUSHPULL |
+                               PAL_STM32_OSPEED_HIGHEST);
 
   spiStart(&SPID1, &spicfg);
   max7219WriteRegister(&SPID1, MAX7219_AD_DISPLAY_TEST, FALSE);

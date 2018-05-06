@@ -10,4 +10,4 @@ on the STM32 Nucleo.
 This demo comes as standalone, there is no article associated with it.
 
 *** ChibiOS related version ***
-Tested under ChibiOS 17.6.x Stable
+Tested under ChibiOS 18.2.x Stable

@@ -11,4 +11,4 @@ for STM32 with ChibiOS".
 http://www.playembedded.org/blog/getting-started-with-mikroe-clicker-2-for-stm32-with-chibios/
 
 *** ChibiOS related version ***
-Tested under ChibiOS 17.6.x Stable
+Tested under ChibiOS 18.2.x Stable
