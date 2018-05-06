@@ -66,11 +66,12 @@
  * Clock frequency (36 MHz / 256), Data size 8bit
  */
 static const SPIConfig spiconf_slowest = {
- NULL,
- GPIOB,                                                   /*port of CS*/
- GPIOB_PIN12,                                             /*pin of CS*/
- SPI_CR1_BR,                                              /*CR1 register*/
- SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+  FALSE,
+  NULL,
+  GPIOB,                                                   /*port of CS*/
+  GPIOB_PIN12,                                             /*pin of CS*/
+  SPI_CR1_BR,                                              /*CR1 register*/
+  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
 };
 
 /*
@@ -80,11 +81,12 @@ static const SPIConfig spiconf_slowest = {
  * Clock frequency (36 MHz / 128), Data size 8bit
  */
 static const SPIConfig spiconf_slow = {
- NULL,
- GPIOB,                                                   /*port of CS*/
- GPIOB_PIN12,                                             /*pin of CS*/
- SPI_CR1_BR_2 | SPI_CR1_BR_1,                             /*CR1 register*/
- SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+  FALSE,
+  NULL,
+  GPIOB,                                                   /*port of CS*/
+  GPIOB_PIN12,                                             /*pin of CS*/
+  SPI_CR1_BR_2 | SPI_CR1_BR_1,                             /*CR1 register*/
+  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
 };
 
 /*
@@ -94,11 +96,12 @@ static const SPIConfig spiconf_slow = {
  * Clock frequency (36 MHz / 64), Data size 8bit
  */
 static const SPIConfig spiconf_mid_slow = {
- NULL,
- GPIOB,                                                   /*port of CS*/
- GPIOB_PIN12,                                             /*pin of CS*/
- SPI_CR1_BR_2 | SPI_CR1_BR_0,                             /*CR1 register*/
- SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+  FALSE,
+  NULL,
+  GPIOB,                                                   /*port of CS*/
+  GPIOB_PIN12,                                             /*pin of CS*/
+  SPI_CR1_BR_2 | SPI_CR1_BR_0,                             /*CR1 register*/
+  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
 };
 
 /*
@@ -108,11 +111,12 @@ static const SPIConfig spiconf_mid_slow = {
  * Clock frequency (36 MHz / 32), Data size 8bit
  */
 static const SPIConfig spiconf_mid_1 = {
- NULL,
- GPIOB,                                                   /*port of CS*/
- GPIOB_PIN12,                                             /*pin of CS*/
- SPI_CR1_BR_2,                                            /*CR1 register*/
- SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+  FALSE,
+  NULL,
+  GPIOB,                                                   /*port of CS*/
+  GPIOB_PIN12,                                             /*pin of CS*/
+  SPI_CR1_BR_2,                                            /*CR1 register*/
+  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
 };
 
 /*
@@ -122,11 +126,12 @@ static const SPIConfig spiconf_mid_1 = {
  * Clock frequency (36 MHz / 16), Data size 8bit
  */
 static const SPIConfig spiconf_mid_2 = {
- NULL,
- GPIOB,                                                   /*port of CS*/
- GPIOB_PIN12,                                             /*pin of CS*/
- SPI_CR1_BR_1 | SPI_CR1_BR_0,                             /*CR1 register*/
- SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+  FALSE,
+  NULL,
+  GPIOB,                                                   /*port of CS*/
+  GPIOB_PIN12,                                             /*pin of CS*/
+  SPI_CR1_BR_1 | SPI_CR1_BR_0,                             /*CR1 register*/
+  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
 };
 
 /*
@@ -136,11 +141,12 @@ static const SPIConfig spiconf_mid_2 = {
  * Clock frequency (36 MHz / 8), Data size 8bit
  */
 static const SPIConfig spiconf_mid_fast = {
- NULL,
- GPIOB,                                                   /*port of CS*/
- GPIOB_PIN12,                                             /*pin of CS*/
- SPI_CR1_BR_1,                                            /*CR1 register*/
- SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+  FALSE,
+  NULL,
+  GPIOB,                                                   /*port of CS*/
+  GPIOB_PIN12,                                             /*pin of CS*/
+  SPI_CR1_BR_1,                                            /*CR1 register*/
+  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
 };
 
 /*
@@ -150,11 +156,12 @@ static const SPIConfig spiconf_mid_fast = {
  * Clock frequency (36 MHz / 4), Data size 8bit
  */
 static const SPIConfig spiconf_fast = {
- NULL,
- GPIOB,                                                   /*port of CS*/
- GPIOB_PIN12,                                             /*pin of CS*/
- SPI_CR1_BR_0,                                            /*CR1 register*/
- SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+  FALSE,
+  NULL,
+  GPIOB,                                                   /*port of CS*/
+  GPIOB_PIN12,                                             /*pin of CS*/
+  SPI_CR1_BR_0,                                            /*CR1 register*/
+  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
 };
 
 /*
@@ -164,6 +171,7 @@ static const SPIConfig spiconf_fast = {
  * Clock frequency (36 MHz / 2), Data size 8bit
  */
 static const SPIConfig spiconf_max = {
+  FALSE,
   NULL,
   GPIOB,                                                   /*port of CS*/
   GPIOB_PIN12,                                             /*pin of CS*/

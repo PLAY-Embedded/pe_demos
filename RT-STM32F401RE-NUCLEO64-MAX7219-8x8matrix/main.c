@@ -58,6 +58,7 @@ static uint8_t presets[MAX_PRESET_NUMB][MAX_DIGITS] = {
 #define  GPIOA_SPID1_MOSI               7
 
 static const SPIConfig spicfg = {
+  FALSE,
   NULL,
   GPIOB,                                          /*   port of CS   */
   GPIOB_SPID1_CS,                                 /*   pin of CS    */

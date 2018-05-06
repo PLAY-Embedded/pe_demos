@@ -86,7 +86,7 @@ endif
 PROJECT = ch
 
 # Imported source files and paths
-CHIBIOS = ../../chibios176
+CHIBIOS = ../../chibios182
 
 # Licensing files.
 include $(CHIBIOS)/os/license/license.mk
@@ -95,7 +95,7 @@ include $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk/startup_stm32f4xx.m
 # HAL-OSAL files (optional).
 include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/hal/ports/STM32/STM32F4xx/platform.mk
-include ./board/board.mk
+include $(CHIBIOS)/os/hal/boards/MIKROE_CLICKER2_STM32/board.mk
 include $(CHIBIOS)/os/hal/osal/rt/osal.mk
 # RTOS files (optional).
 include $(CHIBIOS)/os/rt/rt.mk
@@ -110,8 +110,6 @@ LDSCRIPT= $(STARTUPLD)/STM32F407xG.ld
 # setting.
 CSRC = $(ALLCSRC) \
        $(TESTSRC) \
-       main.c
-
        usbcfg.c main.c
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global

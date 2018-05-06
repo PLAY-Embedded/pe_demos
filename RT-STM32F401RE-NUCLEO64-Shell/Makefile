@@ -86,7 +86,7 @@ endif
 PROJECT = ch
 
 # Imported source files and paths
-CHIBIOS = ../../chibios176
+CHIBIOS = ../../chibios182
 
 # Licensing files.
 include $(CHIBIOS)/os/license/license.mk
@@ -101,7 +101,9 @@ include $(CHIBIOS)/os/hal/osal/rt/osal.mk
 include $(CHIBIOS)/os/rt/rt.mk
 include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
 # Other files (optional).
-include $(CHIBIOS)/test/rt/test.mk
+include $(CHIBIOS)/test/lib/test.mk
+include $(CHIBIOS)/test/rt/rt_test.mk
+include $(CHIBIOS)/test/oslib/oslib_test.mk
 include $(CHIBIOS)/os/hal/lib/streams/streams.mk
 include $(CHIBIOS)/os/various/shell/shell.mk
 
@@ -113,8 +115,6 @@ LDSCRIPT= $(STARTUPLD)/STM32F401xE.ld
 CSRC = $(ALLCSRC) \
        $(TESTSRC) \
        main.c
-
-       $(SHELLSRC) \
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.

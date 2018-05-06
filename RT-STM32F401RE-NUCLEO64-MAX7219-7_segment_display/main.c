@@ -40,6 +40,7 @@ static BaseSequentialStream* chp = (BaseSequentialStream*) &SD2;
 #define  GPIOA_SPID1_MOSI               7
 
 static const SPIConfig spicfg = {
+  FALSE,
   NULL,
   GPIOB,                                          /*   port of CS   */
   GPIOB_SPID1_CS,                                 /*   pin of CS    */

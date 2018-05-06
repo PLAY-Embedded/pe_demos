@@ -107,9 +107,9 @@ int main(void) {
    */
   pwmStart(&PWMD1, &pwmcfg);
   while (TRUE) {
-    rsize = chnReadTimeout(chnp, &note, 1, MS2ST(600));
+    rsize = chnReadTimeout(chnp, &note, 1, TIME_MS2I(600));
     if( rsize == 1){
-      msg = chnPutTimeout(chnp, note, MS2ST(600));
+      msg = chnPutTimeout(chnp, note, TIME_MS2I(600));
       switch(note){
       case 'a':
         pwmChangePeriod(&PWMD1, C5);
