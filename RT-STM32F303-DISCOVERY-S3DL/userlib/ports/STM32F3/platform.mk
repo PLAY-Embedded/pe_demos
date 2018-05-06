@@ -4,3 +4,7 @@ USERSRC += $(USERLIB)/ports/STM32F3/draw_lld.c \
                                
 # Required include directories
 USERINC += $(USERLIB)/ports/STM32F3/
+
+# Shared variables
+ALLCSRC += $(USERSRC)
+ALLINC  += $(USERINC)

@@ -1,4 +1,6 @@
+#Userlib directories
 PLATFORMPATH = $(USERLIB)/platforms/SPC560D
+
 # List of all the SPC560D platform files.
 S3DLPLATFORMSRC = $(PLATFORMPATH)/3DVIDEO/CHIBICUBEv2/draw_lld.c \
                   $(PLATFORMPATH)/3DVIDEO/CHIBICUBEv2/video3d_lld.c \
@@ -12,3 +14,7 @@ S3DLPLATFORMINC = $(PLATFORMPATH)/3DVIDEO/CHIBICUBEv2 \
                   $(PLATFORMPATH)/CONTROLLER \
                   $(PLATFORMPATH)/CONTROLLER/SHELL \
                   $(PLATFORMPATH)/MEMS
+                  
+# Shared variables
+ALLCSRC += $(S3DLPLATFORMSRC)
+ALLINC  += $(S3DLPLATFORMINC)
