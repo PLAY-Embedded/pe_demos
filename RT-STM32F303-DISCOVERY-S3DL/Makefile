@@ -71,7 +71,7 @@ endif
 
 # Enables the use of FPU (no, softfp, hard).
 ifeq ($(USE_FPU),)
-  USE_FPU = hard
+  USE_FPU = no
 endif
 
 #
@@ -102,6 +102,9 @@ include $(CHIBIOS)/os/rt/rt.mk
 include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
 # Other files (optional).
 include ./userlib/userlib.mk
+#include $(CHIBIOS)/test/lib/test.mk
+#include $(CHIBIOS)/test/rt/rt_test.mk
+#include $(CHIBIOS)/test/oslib/oslib_test.mk
 
 # Define linker script file here
 LDSCRIPT= $(STARTUPLD)/STM32F303xC.ld
@@ -176,10 +179,10 @@ AOPT =
 TOPT = -mthumb -DTHUMB
 
 # Define C warning options here
-CWARN = -Wall -Wextra -Wstrict-prototypes
+CWARN = -Wall -Wextra -Wundef -Wstrict-prototypes
 
 # Define C++ warning options here
-CPPWARN = -Wall -Wextra
+CPPWARN = -Wall -Wextra -Wundef
 
 #
 # Compiler settings
@@ -190,7 +193,7 @@ CPPWARN = -Wall -Wextra
 #
 
 # List all user C define here, like -D_DEBUG=1
-UDEFS =
+UDEFS = -DS3DL_USE_FLOAT=0
 
 # Define ASM defines here
 UADEFS =
@@ -208,5 +211,5 @@ ULIBS = -lm
 # End of user defines
 ##############################################################################
 
-RULESPATH = $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC
+RULESPATH = $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk
 include $(RULESPATH)/rules.mk

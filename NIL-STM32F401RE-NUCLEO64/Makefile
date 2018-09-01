@@ -100,6 +100,10 @@ include $(CHIBIOS)/os/hal/osal/nil/osal.mk
 # RTOS files (optional).
 include $(CHIBIOS)/os/nil/nil.mk
 include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
+# Other files (optional).
+#include $(CHIBIOS)/test/lib/test.mk
+#include $(CHIBIOS)/test/nil/nil_test.mk
+#include $(CHIBIOS)/test/oslib/oslib_test.mk
 
 # Define linker script file here
 LDSCRIPT= $(STARTUPLD)/STM32F401xE.ld
@@ -109,7 +113,6 @@ LDSCRIPT= $(STARTUPLD)/STM32F401xE.ld
 CSRC = $(ALLCSRC) \
        $(TESTSRC) \
        main.c
-
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -207,5 +210,5 @@ ULIBS =
 # End of user defines
 ##############################################################################
 
-RULESPATH = $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC
+RULESPATH = $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk
 include $(RULESPATH)/rules.mk
