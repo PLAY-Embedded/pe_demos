@@ -52,6 +52,8 @@ static const ADCConversionGroup my_conversion_group = {
   0,                                /* SMPR1 */
   ADC_SMPR2_SMP_AN0(ADC_SAMPLE_144) |
   ADC_SMPR2_SMP_AN4(ADC_SAMPLE_144),/* SMPR2 */
+  0,                                /* HTR */
+  0,                                /* LTR */
   ADC_SQR1_NUM_CH(MY_NUM_CH),       /* SQR1 */
   0,                                /* SQR2 */
   ADC_SQR3_SQ1_N(ADC_CHANNEL_IN0) |

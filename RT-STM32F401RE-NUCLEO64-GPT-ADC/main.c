@@ -79,12 +79,16 @@ static const ADCConversionGroup adcgrpcfg1 = {
   adccallback,
   adcerrorcallback,
   0,                                                            /* CR1 */
-  ADC_CR2_EXTEN_0 | ADC_CR2_EXTSEL_3,                          /* CR2 */
-  ADC_SMPR1_SMP_SENSOR(ADC_SAMPLE_144) | ADC_SMPR1_SMP_VREF(ADC_SAMPLE_144),
+  ADC_CR2_EXTEN_0 | ADC_CR2_EXTSEL_3,                           /* CR2 */
+  ADC_SMPR1_SMP_SENSOR(ADC_SAMPLE_144) |
+  ADC_SMPR1_SMP_VREF(ADC_SAMPLE_144),                           /* SMPR1 */
   0,                                                            /* SMPR2 */
+  0,                                                            /* HTR */
+  0,                                                            /* LTR */
   ADC_SQR1_NUM_CH(ADC_GRP1_NUM_CHANNELS),                       /* SQR1 */
-  0,                                                            /* SQR1 */
-  ADC_SQR3_SQ2_N(ADC_CHANNEL_SENSOR) | ADC_SQR3_SQ1_N(ADC_CHANNEL_VREFINT)
+  0,                                                            /* SQR2 */
+  ADC_SQR3_SQ2_N(ADC_CHANNEL_SENSOR) |
+  ADC_SQR3_SQ1_N(ADC_CHANNEL_VREFINT)                           /* SQR3 */
 };
 
 /*===========================================================================*/
