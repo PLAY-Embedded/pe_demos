@@ -146,7 +146,8 @@ static uint8_t nrf24l01WriteRegister(SPIDriver *spip, uint8_t reg,
       /* Reserved register must not be written, according to the datasheet
        * this could permanently damage the device.
        */
-      osalDbgAssert(FALSE, "lg3d20WriteRegister(), reserved register");
+      osalDbgAssert(FALSE, "nrf24l01WriteRegister(), reserved register");
+      return 0;
     case NRF24L01_AD_OBSERVE_TX:
     case NRF24L01_AD_CD:
     case NRF24L01_AD_RX_ADDR_P0:
@@ -220,6 +221,7 @@ static uint8_t nrf24l01WriteAddress(SPIDriver *spip, uint8_t reg,
        * this could permanently damage the device.
        */
       osalDbgAssert(FALSE, "nrf24l01WriteAddress(), reserved register");
+      return 0;
     case NRF24L01_AD_OBSERVE_TX:
     case NRF24L01_AD_CD:
     case NRF24L01_AD_CONFIG:
