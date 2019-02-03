@@ -1,5 +1,5 @@
 /*
-    PLAY Embedded demos - Copyright (C) 2014-2018 Rocco Marco Guglielmi
+    PLAY Embedded demos - Copyright (C) 2014-2019 Rocco Marco Guglielmi
 
     This file is part of PLAY Embedded demos.
 
@@ -20,8 +20,8 @@
 #include "ch.h"
 
 /* Green LED blinker thread, times are in milliseconds. */
-static THD_WORKING_AREA(waThread1, 256);
-static THD_FUNCTION(Thread1, arg) {
+THD_WORKING_AREA(waThread1, 256);
+THD_FUNCTION(Thread1, arg) {
 
   (void)arg;
 
@@ -32,8 +32,8 @@ static THD_FUNCTION(Thread1, arg) {
 }
 
 /* Hello world thread. */
-static THD_WORKING_AREA(waThread2, 256);
-static THD_FUNCTION(Thread2, arg) {
+THD_WORKING_AREA(waThread2, 256);
+THD_FUNCTION(Thread2, arg) {
 
   (void)arg;
 
@@ -46,14 +46,13 @@ static THD_FUNCTION(Thread2, arg) {
   }
 }
 
-
 /*
  * Threads static table, one entry per thread. The number of entries must
- * match NIL_CFG_NUM_THREADS.
+ * match CH_CFG_MAX_THREADS.
  */
 THD_TABLE_BEGIN
-  THD_TABLE_ENTRY(waThread1, "LED blinker", Thread1, NULL)
-  THD_TABLE_ENTRY(waThread2, "Hello world", Thread2, NULL)
+  THD_TABLE_THREAD(0, "LED blinker", waThread1, Thread1, NULL)
+  THD_TABLE_THREAD(1, "Hello world", waThread2, Thread2, NULL)
 THD_TABLE_END
 
 /*
