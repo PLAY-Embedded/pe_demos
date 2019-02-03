@@ -11,4 +11,4 @@ For more information read the article "IR Remote and STM32 using ChibiOS".
 http://www.playembedded.org/blog/ir-remote-and-stm32-using-chibios/
 
 *** ChibiOS related version ***
-Tested under ChibiOS 18.2.x Stable
+Tested under ChibiOS trunk r12636

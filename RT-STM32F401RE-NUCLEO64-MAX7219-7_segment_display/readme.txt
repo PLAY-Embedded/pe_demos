@@ -12,4 +12,4 @@ ChibiOS".
 http://www.playembedded.org/blog/7-segment-display-and-stm32-using-chibios/
 
 *** ChibiOS related version ***
-Tested under ChibiOS 18.2.x Stable
+Tested under ChibiOS trunk r12636
