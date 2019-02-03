@@ -1,5 +1,5 @@
 /*
-    PLAY Embedded demos - Copyright (C) 2014-2019 Rocco Marco Guglielmi
+    PLAY Embedded demos - Copyright (C) 2014...2019 Rocco Marco Guglielmi
 
     This file is part of PLAY Embedded demos.
 
