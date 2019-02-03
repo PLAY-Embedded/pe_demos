@@ -12,4 +12,4 @@ Crystal Display".
 http://www.playembedded.org/blog/hd44780-lcdii-and-chibioshal/
 
 *** ChibiOS related version ***
-Tested under ChibiOS 18.2.x Stable
+Tested under ChibiOS trunk r12636

@@ -1,5 +1,5 @@
 /*
-    PLAY Embedded demos - Copyright (C) 2014...2018 Rocco Marco Guglielmi
+    PLAY Embedded demos - Copyright (C) 2014...2019 Rocco Marco Guglielmi
 
     This file is part of PLAY Embedded demos.
 
@@ -15,9 +15,9 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 */
- 
-#include "hal.h"
+
 #include "ch.h"
+#include "hal.h"
 
 #include "lcd.h"
 
@@ -65,30 +65,30 @@ static const lcd_pins_t lcdpins = {
   LINE_A,
   {
 #if !LCD_USE_4_BIT_MODE
-   LINE_D0,
-   LINE_D1,
-   LINE_D2,
-   LINE_D3,
+    LINE_D0,
+    LINE_D1,
+    LINE_D2,
+    LINE_D3,
 #endif
-   LINE_D4,
-   LINE_D5,
-   LINE_D6,
-   LINE_D7
+    LINE_D4,
+    LINE_D5,
+    LINE_D6,
+    LINE_D7
   }
 };
 
 static const LCDConfig lcdcfg = {
-  LCD_CURSOR_OFF,           /* Cursor disabled */
-  LCD_BLINKING_OFF,         /* Blinking disabled */
-  LCD_SET_FONT_5X10,        /* Font 5x10 */
-  LCD_SET_2LINES,           /* 2 lines */
-  &lcdpins,                 /* pin map */
+  LCD_CURSOR_OFF,                           /* Cursor disabled               */
+  LCD_BLINKING_OFF,                         /* Blinking disabled             */
+  LCD_SET_FONT_5X10,                        /* Font 5x10                     */
+  LCD_SET_2LINES,                           /* 2 lines                       */
+  &lcdpins,                                 /* Pin map                       */
 #if LCD_USE_DIMMABLE_BACKLIGHT
-  &PWMD1,                   /* PWM Driver for back-light */
-  &pwmcfg,                  /* PWM driver configuration for back-light */
-  0,                        /* PWM channel */
-#endif
-  100,                      /* Back-light */
+  &PWMD1,                                   /* PWM Driver for back-light     */
+  &pwmcfg,                                  /* PWM driver cfg for back-light */
+  0,                                        /* PWM channel                   */
+#endif                                      
+  100,                                      /* Back-light                    */
 };
 
 /*
@@ -99,35 +99,65 @@ static THD_FUNCTION(Thread1, arg) {
 
   (void)arg;
   while (true) {
-    palClearPad(GPIOA, GPIOA_LED_GREEN);
-    chThdSleepMilliseconds(500);
-    palSetPad(GPIOA, GPIOA_LED_GREEN);
+    palToggleLine(LINE_LED_GREEN);
     chThdSleepMilliseconds(500);
   }
 }
 
 /*
- * Main thread.
+ * Backlight handler.
  */
-static THD_WORKING_AREA(waThread2, 512);
+static THD_WORKING_AREA(waThread2, 128);
 static THD_FUNCTION(Thread2, arg) {
-  unsigned ii;
+
   (void)arg;
 
-  lcdInit();
-
+  /* Configuring Anode PIN as TIM1_CH1 or GPIO depending on configuration. */
 #if LCD_USE_DIMMABLE_BACKLIGHT
-  /* Configuring Anode PIN as TIM1 CH1 alternate function. */
   palSetLineMode(LINE_A, PAL_MODE_ALTERNATE(1));
 #else
-  /* Configuring Anode PIN as TIM1 CH1 alternate function. */
-  palSetLineMode(LINE_A, PAL_MODE_OUTPUT_PUSHPULL |
-                 PAL_STM32_OSPEED_HIGHEST);
+  palSetLineMode(LINE_A, PAL_MODE_OUTPUT_PUSHPULL | PAL_STM32_OSPEED_HIGHEST);
 #endif
 
+  /* Enabling event on falling edge of LINE_BUTTON signal.*/
+  palEnableLineEvent(LINE_BUTTON, PAL_EVENT_MODE_FALLING_EDGE);
 
-  /* Configuring RW, RS and E PIN as Output Push Pull. Note that Data PIN are
-     managed Internally */
+  /* Performing shift continuously. */
+  while (true) {
+
+    /* Waiting for an event on LINE_BUTTON edge.*/
+    palWaitLineTimeout(LINE_BUTTON, TIME_INFINITE);
+
+    /* Action depends on current backlight and LCD configuration. */
+    if(LCDD1.backlight > 0) {
+#if LCD_USE_DIMMABLE_BACKLIGHT
+      lcdBacklightFadeOut(&LCDD1);
+#else
+      lcdBacklightOff(&LCDD1);
+#endif
+    }
+    else {
+#if LCD_USE_DIMMABLE_BACKLIGHT
+      lcdBacklightFadeIn(&LCDD1);
+#else
+      lcdBacklightOn(&LCDD1);
+#endif
+    }
+  }
+}
+
+/*
+ * LCD handler.
+ */
+static THD_WORKING_AREA(waThread3, 512);
+static THD_FUNCTION(Thread3, arg) {
+
+  (void)arg;
+
+  /* Initializing LDC driver. */
+  lcdInit();
+
+  /* Configuring RW, RS and E PIN as Output Push Pull. */
   palSetLineMode(LINE_RW, PAL_MODE_OUTPUT_PUSHPULL |
                 PAL_STM32_OSPEED_HIGHEST);
   palSetLineMode(LINE_RS, PAL_MODE_OUTPUT_PUSHPULL |
@@ -135,12 +165,17 @@ static THD_FUNCTION(Thread2, arg) {
   palSetLineMode(LINE_E, PAL_MODE_OUTPUT_PUSHPULL |
                 PAL_STM32_OSPEED_HIGHEST);
 
-
+  /* Starting LDC driver. */
   lcdStart(&LCDD1, &lcdcfg);
+
+  /* Writing some default strings. */
   lcdWriteString(&LCDD1, "PLAY            Learn", 0);
   lcdWriteString(&LCDD1, "Embedded        by doing",40);
   chThdSleepMilliseconds(2000);
+
+  /* Performing shift continuously. */
   while (true) {
+    unsigned ii;
     for(ii = 0; ii < 16; ii++){
       lcdDoDisplayShift(&LCDD1, LCD_LEFT);
       chThdSleepMilliseconds(50);
@@ -155,45 +190,13 @@ static THD_FUNCTION(Thread2, arg) {
 }
 
 /*
- * Button checker. This thread turn on and off LCD backlight when USER button
- * is pressed. Fade transition is applied when library use PWM.
- */
-static THD_WORKING_AREA(waThread3, 256);
-static THD_FUNCTION(Thread3, arg) {
-
-  (void)arg;
-  while (true) {
-    if(palReadPad(GPIOC, GPIOC_BUTTON)){
-      chThdSleepMilliseconds(50);
-      if(!palReadPad(GPIOC, GPIOC_BUTTON)){
-        if(LCDD1.backlight > 0) {
-#if LCD_USE_DIMMABLE_BACKLIGHT
-          lcdBacklightFadeOut(&LCDD1);
-#else
-          lcdBacklightOff(&LCDD1);
-#endif
-        }
-        else {
-#if LCD_USE_DIMMABLE_BACKLIGHT
-          lcdBacklightFadeIn(&LCDD1);
-#else
-          lcdBacklightOn(&LCDD1);
-#endif
-        }
-      }
-    }
-    chThdSleepMilliseconds(10);
-  }
-}
-
-/*
  * Threads static table, one entry per thread. The number of entries must
  * match NIL_CFG_NUM_THREADS.
  */
 THD_TABLE_BEGIN
-  THD_TABLE_ENTRY(waThread1, "LED blinker", Thread1, NULL)
-  THD_TABLE_ENTRY(waThread2, "LCD handler", Thread2, NULL)
-  THD_TABLE_ENTRY(waThread3, "Back_light handler", Thread3, NULL)
+  THD_TABLE_THREAD(0, "LED blinker", waThread1, Thread1, NULL)
+  THD_TABLE_THREAD(2, "Backlight handler", waThread2, Thread2, NULL)
+  THD_TABLE_THREAD(1, "LCD handler", waThread3, Thread3, NULL)
 THD_TABLE_END
 
 /*
