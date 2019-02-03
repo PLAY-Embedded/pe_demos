@@ -10,4 +10,4 @@ on the STM32 Nucleo. In this case shell prints on UART2 instead of USB.
 This demo comes as standalone, there is no article associated with it.
 
 *** ChibiOS related version ***
-Tested under ChibiOS 18.2.x Stable
+Tested under ChibiOS trunk r12636
