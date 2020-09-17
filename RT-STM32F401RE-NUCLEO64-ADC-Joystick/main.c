@@ -120,7 +120,7 @@ static THD_FUNCTION(Thd2, arg) {
     }
     x_raw /= MY_SAMPLING_NUMBER;
     y_raw /= MY_SAMPLING_NUMBER;
-	/* Removing offset and centring range */
+	/* Removing offset and centering range */
     x_raw -= (HALF_ADC + x_offset);
     y_raw -= (HALF_ADC + y_offset);
 
