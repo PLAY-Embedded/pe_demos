@@ -12,4 +12,4 @@ nRF24L01 and ChibiOS/RT".
 http://www.playembedded.org/blog/a-radio-frequency-transceiver-library-nrf24l01-and-chibiosrt/
 
 *** ChibiOS related version ***
-Tested under ChibiOS trunk r12636
+Tested under ChibiOS 20.3.3

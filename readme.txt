@@ -10,4 +10,5 @@ articles. The version number refers to the associated ChibiOS release.
 *****************************************************************************
 
 *** next release ***
+- Updated projects to be compliant with ChibiOS Trunk r13865.
 - Removed debug configuration from the demos.

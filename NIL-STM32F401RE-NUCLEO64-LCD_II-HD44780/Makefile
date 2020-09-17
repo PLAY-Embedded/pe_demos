@@ -86,7 +86,7 @@ endif
 PROJECT = ch
 
 # Target settings.
-MCU  = cortex-m3
+MCU  = cortex-m4
 
 # Imported source files and paths.
 CHIBIOS  := ../../chibios_trunk
@@ -102,7 +102,7 @@ include $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk/startup_stm32f4xx.m
 include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/hal/ports/STM32/STM32F4xx/platform.mk
 include $(CHIBIOS)/os/hal/boards/ST_NUCLEO64_F401RE/board.mk
-include $(CHIBIOS)/os/hal/osal/nil/osal.mk
+include $(CHIBIOS)/os/hal/osal/rt-nil/osal.mk
 # RTOS files (optional).
 include $(CHIBIOS)/os/nil/nil.mk
 include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
@@ -111,7 +111,7 @@ include $(CHIBIOS)/tools/mk/autobuild.mk
 # Other files (optional).
 include ./userlib/user.mk
 
-# Define linker script file here
+# Define linker script file here.
 LDSCRIPT= $(STARTUPLD)/STM32F401xE.ld
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global

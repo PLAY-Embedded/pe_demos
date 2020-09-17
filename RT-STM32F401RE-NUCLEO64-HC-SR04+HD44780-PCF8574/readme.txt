@@ -12,4 +12,4 @@ ultrasonic sensor HC-SR04".
 http://www.playembedded.org/blog/detecting-obstacles-hc-sr04/ 
 
 *** ChibiOS related version ***
-Tested under ChibiOS trunk r12636
+Tested under ChibiOS 20.3.3

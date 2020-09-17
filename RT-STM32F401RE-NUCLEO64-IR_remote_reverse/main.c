@@ -67,7 +67,8 @@ static ICUConfig icucfg = {
   NULL,
   NULL,
   ICU_CHANNEL_1,
-  0
+  0,
+  0xFFFFFFFFU
 };
 
 /*
