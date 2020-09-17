@@ -20,7 +20,7 @@
 #include "hal.h"
 #include "chprintf.h"
 
-static BaseSequentialStream* chp = (BaseSequentialStream*) &SD2;
+static BaseSequentialStream* seqstrp = (BaseSequentialStream*) &SD2;
 static event_listener_t el;
 static event_source_t IR_receiver;
 /*===========================================================================*/
@@ -158,115 +158,115 @@ int main(void) {
     chEvtWaitAny(ALL_EVENTS);
     switch(command){
     case BTN_CH_DOWN:
-      chprintf(chp, "CH-");
+      chprintf(seqstrp, "CH-");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_CH:
-      chprintf(chp, "CH");
+      chprintf(seqstrp, "CH");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_CH_UP:
-      chprintf(chp, "CH+");
+      chprintf(seqstrp, "CH+");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_PREV:
-      chprintf(chp, "PREV");
+      chprintf(seqstrp, "PREV");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_NEXT:
-      chprintf(chp, "NEXT");
+      chprintf(seqstrp, "NEXT");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_PLAY_PAUSE:
-      chprintf(chp, "PLAY/PAUSE");
+      chprintf(seqstrp, "PLAY/PAUSE");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_VOL_DOWN:
-      chprintf(chp, "VOL-");
+      chprintf(seqstrp, "VOL-");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_VOL_UP:
-      chprintf(chp, "VOL+");
+      chprintf(seqstrp, "VOL+");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_EQ:
-      chprintf(chp, "EQ");
+      chprintf(seqstrp, "EQ");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_0:
-      chprintf(chp, "0");
+      chprintf(seqstrp, "0");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_100:
-      chprintf(chp, "100+");
+      chprintf(seqstrp, "100+");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_200:
-      chprintf(chp, "200+");
+      chprintf(seqstrp, "200+");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_1:
-      chprintf(chp, "1");
+      chprintf(seqstrp, "1");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_2:
-      chprintf(chp, "2");
+      chprintf(seqstrp, "2");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_3:
-      chprintf(chp, "3");
+      chprintf(seqstrp, "3");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_4:
-      chprintf(chp, "4");
+      chprintf(seqstrp, "4");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_5:
-      chprintf(chp, "5");
+      chprintf(seqstrp, "5");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_6:
-      chprintf(chp, "6");
+      chprintf(seqstrp, "6");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_7:
-      chprintf(chp, "7");
+      chprintf(seqstrp, "7");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_8:
-      chprintf(chp, "8");
+      chprintf(seqstrp, "8");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     case BTN_9:
-      chprintf(chp, "9");
+      chprintf(seqstrp, "9");
       if(REPEAT_FLAG)
-        chprintf(chp, " RPT");
+        chprintf(seqstrp, " RPT");
       break;
     default:
-      chprintf(chp, "Unknown");
+      chprintf(seqstrp, "Unknown");
       break;
     }
-    chprintf(chp,"\n\r");
+    chprintf(seqstrp,"\n\r");
   }
   return 0;
 }

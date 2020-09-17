@@ -54,7 +54,7 @@ static bool isNotEmpty(queue_t* qp) {
 
 static queue_t widths;
 
-static BaseSequentialStream* chp = (BaseSequentialStream*) &SD2;
+static BaseSequentialStream* seqstrp = (BaseSequentialStream*) &SD2;
 static void icuwidthcb(ICUDriver *icup) {
   if(isNotFull(&widths))
   qEnque(&widths, icuGetWidthX(icup));
@@ -108,7 +108,7 @@ int main(void) {
    */
   while (true) {
     if(isNotEmpty(&widths))
-      chprintf(chp, "%d ", qDequeue(&widths));
+      chprintf(seqstrp, "%d ", qDequeue(&widths));
     chThdSleepMilliseconds(10);
   }
   return 0;

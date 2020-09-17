@@ -26,7 +26,7 @@
 /* Enable if your terminal supports ANSI ESCAPE CODE */
 #define ANSI_ESCAPE_CODE_ALLOWED    TRUE
 
-static BaseSequentialStream * chp = (BaseSequentialStream*) &SD2;
+static BaseSequentialStream * seqstrp = (BaseSequentialStream*) &SD2;
 
 /*===========================================================================*/
 /* ICU related code                                                          */
@@ -114,9 +114,9 @@ int main(void) {
     chThdSleepMicroseconds(10);
     palWriteLine(LINE_TRIGGER, PAL_LOW);
 #if ANSI_ESCAPE_CODE_ALLOWED
-    chprintf(chp, "\033[2J\033[1;1H");
+    chprintf(seqstrp, "\033[2J\033[1;1H");
 #endif
-    chprintf(chp, "Distance: %.2f cm\n\r", lastdistance);
+    chprintf(seqstrp, "Distance: %.2f cm\n\r", lastdistance);
     chThdSleepMilliseconds(100);
   }
   icuStopCapture(&ICUD1);

@@ -26,7 +26,7 @@
  */
 #define ANSI_ESCAPE_CODE_ALLOWED                  TRUE
 
-static BaseSequentialStream * chp = (BaseSequentialStream*) &SD2;
+static BaseSequentialStream * seqstrp = (BaseSequentialStream*) &SD2;
 
 /*===========================================================================*/
 /* DHT11 related defines                                                     */
@@ -166,17 +166,17 @@ int main(void) {
     icuEnableNotifications(&ICUD1);
     chThdSleepMilliseconds(700);
 #if ANSI_ESCAPE_CODE_ALLOWED
-    chprintf(chp, "\033[2J\033[1;1H");
+    chprintf(seqstrp, "\033[2J\033[1;1H");
 #endif
     icuStopCapture(&ICUD1);
     icuStop(&ICUD1);
 
-    chprintf(chp, "Temperature: %d C, Humidity Rate: %d %% \n\r", TEMP, HR);
+    chprintf(seqstrp, "Temperature: %d C, Humidity Rate: %d %% \n\r", TEMP, HR);
     if(CHECK_SUM == (TEMP + HR)){
-      chprintf(chp, "Checksum OK!\n\r");
+      chprintf(seqstrp, "Checksum OK!\n\r");
     }
     else{
-      chprintf(chp, "Checksum FAILED!\n\r");
+      chprintf(seqstrp, "Checksum FAILED!\n\r");
     }
   }
 }

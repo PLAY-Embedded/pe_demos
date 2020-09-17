@@ -20,7 +20,7 @@
 #include "hal.h"
 #include "chprintf.h"
 
-BaseSequentialStream * chp = (BaseSequentialStream *) &SD2;
+BaseSequentialStream * seqstrp = (BaseSequentialStream *) &SD2;
 static int32_t mean;
 static bool flag = FALSE;
 static float lastvalue;
@@ -162,12 +162,12 @@ int main(void) {
   while (TRUE) {
 
     if (flag) {
-      chprintf(chp, "PLAY Embedded + ChibiOS\\RT: Slider demo \r\n");
-      chprintf(chp, "Last value: %d.%03.d V \r\n", ftomod(lastvalue),
+      chprintf(seqstrp, "PLAY Embedded + ChibiOS\\RT: Slider demo \r\n");
+      chprintf(seqstrp, "Last value: %d.%03.d V \r\n", ftomod(lastvalue),
                ftodp(lastvalue));
       flag = FALSE;
       chThdSleepMilliseconds(150);
-      chprintf(chp, "\033[2J\033[1;1H");
+      chprintf(seqstrp, "\033[2J\033[1;1H");
     }
     chThdSleepMilliseconds(1);
   }

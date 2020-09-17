@@ -23,7 +23,7 @@
 #define MAX_VALUE            1000
 #define HALF_ADC             2047
 
-BaseSequentialStream * chp = (BaseSequentialStream *) &SD2;
+BaseSequentialStream * seqstrp = (BaseSequentialStream *) &SD2;
 static bool flag = FALSE;
 static int32_t x_raw, y_raw, x_offset, y_offset, x_scaled, y_scaled;
 /*===========================================================================*/
@@ -179,15 +179,15 @@ int main(void) {
   while (TRUE) {
 
     if (flag) {
-      chprintf(chp, "PLAY Embedded + ChibiOS\\RT: Slider demo \r\n");
-      chprintf(chp, "X:%4d, Y:%4d ", x_scaled, y_scaled);
+      chprintf(seqstrp, "PLAY Embedded + ChibiOS\\RT: Slider demo \r\n");
+      chprintf(seqstrp, "X:%4d, Y:%4d ", x_scaled, y_scaled);
       if(palReadPad(GPIOA, 4) == PAL_LOW){
-        chprintf(chp, "BUTTON PRESSED");
+        chprintf(seqstrp, "BUTTON PRESSED");
       }
-      chprintf(chp, "\r\n");
+      chprintf(seqstrp, "\r\n");
       flag = FALSE;
       chThdSleepMilliseconds(150);
-      chprintf(chp, "\033[2J\033[1;1H");
+      chprintf(seqstrp, "\033[2J\033[1;1H");
     }
     chThdSleepMilliseconds(1);
   }
