@@ -10,8 +10,4 @@ articles. The version number refers to the associated ChibiOS release.
 *****************************************************************************
 
 *** next release ***
-- Removed Clicker 2 demos.
-- Updated makefile and configuration file to be compliant with ChibiOS next.
-- Updated NIL demos to be compliant with NIL 4.0.
-- Updated HD44780 demos with new PAL wait mechanism.
-- Fixed bug in HC-SR04 demos (Bug #1).
+- Removed debug configuration from the demos.
