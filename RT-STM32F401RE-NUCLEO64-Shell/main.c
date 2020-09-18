@@ -29,7 +29,7 @@
 #define SHELL_WA_SIZE   THD_WORKING_AREA_SIZE(2048)
 
 /* Can be measured using dd if=/dev/xxxx of=/dev/null bs=512 count=10000.*/
-static void cmd_write(BaseSequentialStream *seqstrp, int argc, char *argv[]) {
+static void cmd_write(BaseSequentialStream *chp, int argc, char *argv[]) {
   static uint8_t buf[] =
       "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
       "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
@@ -50,15 +50,15 @@ static void cmd_write(BaseSequentialStream *seqstrp, int argc, char *argv[]) {
 
   (void)argv;
   if (argc > 0) {
-    chprintf(seqstrp, "Usage: write\r\n");
+    chprintf(chp, "Usage: write\r\n");
     return;
   }
 
-  while (chnGetTimeout((BaseChannel *)seqstrp, TIME_IMMEDIATE) == Q_TIMEOUT) {
+  while (chnGetTimeout((BaseChannel *)chp, TIME_IMMEDIATE) == Q_TIMEOUT) {
     /* Writing in channel mode.*/
     chnWrite(&SD2, buf, sizeof buf - 1);
   }
-  chprintf(seqstrp, "\r\n\nstopped\r\n");
+  chprintf(chp, "\r\n\nstopped\r\n");
 }
 
 static const ShellCommand commands[] = {

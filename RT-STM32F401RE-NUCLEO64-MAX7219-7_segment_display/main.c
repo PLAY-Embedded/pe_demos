@@ -23,7 +23,7 @@
 #include "max7219.h"
 
 static systime_t time, hours, minutes, seconds, millisec;
-static BaseSequentialStream* seqstrp = (BaseSequentialStream*) &SD2;
+static BaseSequentialStream* chp = (BaseSequentialStream*) &SD2;
 /*===========================================================================*/
 /* Numeric display related code.                                             */
 /*===========================================================================*/
@@ -90,7 +90,7 @@ int main(void) {
     minutes = (time / 600000) % 60;
     seconds = (time / 10000) % 60;
     millisec = (time / 10) % 1000;
-    chprintf(seqstrp, "%d:%2d:%2d.%3d\n\r", hours, minutes, seconds, millisec);
+    chprintf(chp, "%d:%2d:%2d.%3d\n\r", hours, minutes, seconds, millisec);
     max7219WriteRegister(&SPID1, MAX7219_AD_DIGIT_7, (millisec % 10));
     max7219WriteRegister(&SPID1, MAX7219_AD_DIGIT_6, ((millisec / 10) % 10));
     max7219WriteRegister(&SPID1, MAX7219_AD_DIGIT_5, (millisec / 100));
