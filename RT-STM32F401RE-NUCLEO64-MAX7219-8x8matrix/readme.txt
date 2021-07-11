@@ -11,4 +11,4 @@ For more information read the article "STM32, ChibiOS and a 8×8 LED Matrix".
 http://www.playembedded.org/blog/stm32-chibios-and-a-8x8-led-matrix/
 
 *** ChibiOS related version ***
-Tested under ChibiOS 20.3.3
+Tested under ChibiOS Trunk r14595

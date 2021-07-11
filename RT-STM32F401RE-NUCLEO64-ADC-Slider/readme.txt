@@ -11,4 +11,4 @@ For more information read the article "Reading a Slider".
 http://www.playembedded.org/blog/reading-a-slider/
 
 *** ChibiOS related version ***
-Tested under ChibiOS 20.3.3
+Tested under ChibiOS Trunk r14595
