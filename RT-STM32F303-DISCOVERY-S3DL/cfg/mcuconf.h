@@ -169,19 +169,6 @@
 #define STM32_I2C_DMA_ERROR_HOOK(i2cp)      osalSysHalt("DMA failure")
 
 /*
- * I2S driver system settings.
- */
-#define STM32_I2S_USE_SPI2                  FALSE
-#define STM32_I2S_USE_SPI3                  FALSE
-#define STM32_I2S_SPI2_MODE                 (STM32_I2S_MODE_MASTER | STM32_I2S_MODE_RX)
-#define STM32_I2S_SPI3_MODE                 (STM32_I2S_MODE_MASTER | STM32_I2S_MODE_RX)
-#define STM32_I2S_SPI2_IRQ_PRIORITY         10
-#define STM32_I2S_SPI3_IRQ_PRIORITY         10
-#define STM32_I2S_SPI2_DMA_PRIORITY         1
-#define STM32_I2S_SPI3_DMA_PRIORITY         1
-#define STM32_I2S_DMA_ERROR_HOOK(i2sp)      osalSysHalt("DMA failure")
-
-/*
  * ICU driver system settings.
  */
 #define STM32_ICU_USE_TIM1                  FALSE
@@ -199,7 +186,6 @@
 /*
  * PWM driver system settings.
  */
-#define STM32_PWM_USE_ADVANCED              FALSE
 #define STM32_PWM_USE_TIM1                  FALSE
 #define STM32_PWM_USE_TIM2                  FALSE
 #define STM32_PWM_USE_TIM3                  FALSE

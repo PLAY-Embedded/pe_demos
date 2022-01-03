@@ -12,4 +12,4 @@ ChibiOS".
 http://www.playembedded.org/blog/reading-a-joystick-on-stm32-using-chibios/
 
 *** ChibiOS related version ***
-Tested under ChibiOS Trunk r14595
+Tested under ChibiOS Trunk r15313

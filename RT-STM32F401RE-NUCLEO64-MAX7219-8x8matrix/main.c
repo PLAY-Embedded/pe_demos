@@ -53,11 +53,13 @@ static uint8_t presets[MAX_PRESET_NUMB][MAX_DIGITS] = {
 /*===========================================================================*/
 
 static const SPIConfig spicfg = {
-  FALSE,
-  NULL,
-  LINE_ARD_D10,                                   /*   Line of CS   */
-  SPI_CR1_BR | SPI_CR1_DFF,                       /*   CR1 register */
-  0                                               /*   CR2 register */
+  .circular         = false,
+  .slave            = false,
+  .data_cb          = NULL,
+  .error_cb         = NULL,
+  .ssline           = LINE_ARD_D10,
+  .cr1              = SPI_CR1_BR | SPI_CR1_DFF,
+  .cr2              = 0
 };
 
 /*===========================================================================*/

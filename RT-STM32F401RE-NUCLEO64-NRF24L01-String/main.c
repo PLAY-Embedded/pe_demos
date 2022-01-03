@@ -32,29 +32,32 @@
 #define  NRF24L01_SPI_MOSI                    LINE_ARD_D11
 
 #define  FRAME_LEN                            5
-static const SPIConfig std_spi_cfg = {
-  FALSE,
-  NULL,
-  NRF24L01_SPI_CS,                                /*   Line of CS    */
-  SPI_CR1_BR_1 | SPI_CR1_BR_0,                    /*   CR1 register */
-  0                                               /*   CR2 register */
+
+static const SPIConfig spicfg = {
+  .circular         = false,
+  .slave            = false,
+  .data_cb          = NULL,
+  .error_cb         = NULL,
+  .ssline           = NRF24L01_SPI_CS,
+  .cr1              = SPI_CR1_BR_1 | SPI_CR1_BR_0,
+  .cr2              = 0
 };
 
 static RFConfig nrf24l01_cfg = {
-  NRF24L01_LINE_CE,
-  NRF24L01_LINE_IRQ,
-  &SPID1,
-  &std_spi_cfg,
-  NRF24L01_ARC_15_times,     /* auto_retr_count */
-  NRF24L01_ARD_4000us,       /* auto_retr_delay */
-  NRF24L01_AW_5_bytes,       /* address_width */
-  120,                       /* channel_freq 2.4 + 0.12 GHz */
-  NRF24L01_ADR_2Mbps,        /* data_rate */
-  NRF24L01_PWR_0dBm,         /* out_pwr */
-  NRF24L01_LNA_disabled,     /* lna */
-  NRF24L01_DPL_enabled ,     /* en_dpl */
-  NRF24L01_ACK_PAY_disabled, /* en_ack_pay */
-  NRF24L01_DYN_ACK_disabled  /* en_dyn_ack */
+  .line_ce          = NRF24L01_LINE_CE,
+  .line_irq         = NRF24L01_LINE_IRQ,
+  .spip             = &SPID1,
+  .spicfg           = &spicfg,
+  .auto_retr_count  = NRF24L01_ARC_15_times,
+  .auto_retr_delay  = NRF24L01_ARD_4000us,
+  .address_width    = NRF24L01_AW_5_bytes,
+  .channel_freq     = 120,
+  .data_rate        = NRF24L01_ADR_2Mbps,
+  .out_pwr          = NRF24L01_PWR_0dBm,
+  .lna              = NRF24L01_LNA_disabled,
+  .en_dpl           = NRF24L01_DPL_enabled,
+  .en_ack_pay       = NRF24L01_ACK_PAY_disabled,
+  .en_dyn_ack       = NRF24L01_DYN_ACK_disabled
 };
 
 /*===========================================================================*/

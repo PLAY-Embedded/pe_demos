@@ -66,12 +66,14 @@
  * Clock frequency (36 MHz / 256), Data size 8bit
  */
 static const SPIConfig spiconf_slowest = {
-  FALSE,
-  NULL,
-  GPIOB,                                                   /*port of CS*/
-  GPIOB_PIN12,                                             /*pin of CS*/
-  SPI_CR1_BR,                                              /*CR1 register*/
-  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+  .circular         = false,
+  .slave            = false,
+  .data_cb          = NULL,
+  .error_cb         = NULL,
+  .ssport           = GPIOB,
+  .sspad            = GPIOB_PIN12,
+  .cr1              = SPI_CR1_BR,
+  .cr2              = SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0
 };
 
 /*
@@ -81,12 +83,14 @@ static const SPIConfig spiconf_slowest = {
  * Clock frequency (36 MHz / 128), Data size 8bit
  */
 static const SPIConfig spiconf_slow = {
-  FALSE,
-  NULL,
-  GPIOB,                                                   /*port of CS*/
-  GPIOB_PIN12,                                             /*pin of CS*/
-  SPI_CR1_BR_2 | SPI_CR1_BR_1,                             /*CR1 register*/
-  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+   .circular         = false,
+   .slave            = false,
+   .data_cb          = NULL,
+   .error_cb         = NULL,
+   .ssport           = GPIOB,
+   .sspad            = GPIOB_PIN12,
+   .cr1              = SPI_CR1_BR_2 | SPI_CR1_BR_1,
+   .cr2              = SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0
 };
 
 /*
@@ -96,12 +100,14 @@ static const SPIConfig spiconf_slow = {
  * Clock frequency (36 MHz / 64), Data size 8bit
  */
 static const SPIConfig spiconf_mid_slow = {
-  FALSE,
-  NULL,
-  GPIOB,                                                   /*port of CS*/
-  GPIOB_PIN12,                                             /*pin of CS*/
-  SPI_CR1_BR_2 | SPI_CR1_BR_0,                             /*CR1 register*/
-  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+  .circular         = false,
+  .slave            = false,
+  .data_cb          = NULL,
+  .error_cb         = NULL,
+  .ssport           = GPIOB,
+  .sspad            = GPIOB_PIN12,
+  .cr1              = SPI_CR1_BR_2 | SPI_CR1_BR_0,
+  .cr2              = SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0
 };
 
 /*
@@ -111,12 +117,14 @@ static const SPIConfig spiconf_mid_slow = {
  * Clock frequency (36 MHz / 32), Data size 8bit
  */
 static const SPIConfig spiconf_mid_1 = {
-  FALSE,
-  NULL,
-  GPIOB,                                                   /*port of CS*/
-  GPIOB_PIN12,                                             /*pin of CS*/
-  SPI_CR1_BR_2,                                            /*CR1 register*/
-  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+  .circular         = false,
+  .slave            = false,
+  .data_cb          = NULL,
+  .error_cb         = NULL,
+  .ssport           = GPIOB,
+  .sspad            = GPIOB_PIN12,
+  .cr1              = SPI_CR1_BR_2,
+  .cr2              = SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0
 };
 
 /*
@@ -126,12 +134,14 @@ static const SPIConfig spiconf_mid_1 = {
  * Clock frequency (36 MHz / 16), Data size 8bit
  */
 static const SPIConfig spiconf_mid_2 = {
-  FALSE,
-  NULL,
-  GPIOB,                                                   /*port of CS*/
-  GPIOB_PIN12,                                             /*pin of CS*/
-  SPI_CR1_BR_1 | SPI_CR1_BR_0,                             /*CR1 register*/
-  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+  .circular         = false,
+  .slave            = false,
+  .data_cb          = NULL,
+  .error_cb         = NULL,
+  .ssport           = GPIOB,
+  .sspad            = GPIOB_PIN12,
+  .cr1              = SPI_CR1_BR_1 | SPI_CR1_BR_0,
+  .cr2              = SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0
 };
 
 /*
@@ -141,12 +151,14 @@ static const SPIConfig spiconf_mid_2 = {
  * Clock frequency (36 MHz / 8), Data size 8bit
  */
 static const SPIConfig spiconf_mid_fast = {
-  FALSE,
-  NULL,
-  GPIOB,                                                   /*port of CS*/
-  GPIOB_PIN12,                                             /*pin of CS*/
-  SPI_CR1_BR_1,                                            /*CR1 register*/
-  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+  .circular         = false,
+  .slave            = false,
+  .data_cb          = NULL,
+  .error_cb         = NULL,
+  .ssport           = GPIOB,
+  .sspad            = GPIOB_PIN12,
+  .cr1              = SPI_CR1_BR_1,
+  .cr2              = SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0
 };
 
 /*
@@ -156,12 +168,14 @@ static const SPIConfig spiconf_mid_fast = {
  * Clock frequency (36 MHz / 4), Data size 8bit
  */
 static const SPIConfig spiconf_fast = {
-  FALSE,
-  NULL,
-  GPIOB,                                                   /*port of CS*/
-  GPIOB_PIN12,                                             /*pin of CS*/
-  SPI_CR1_BR_0,                                            /*CR1 register*/
-  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+  .circular         = false,
+  .slave            = false,
+  .data_cb          = NULL,
+  .error_cb         = NULL,
+  .ssport           = GPIOB,
+  .sspad            = GPIOB_PIN12,
+  .cr1              = SPI_CR1_BR_0,
+  .cr2              = SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0
 };
 
 /*
@@ -171,12 +185,14 @@ static const SPIConfig spiconf_fast = {
  * Clock frequency (36 MHz / 2), Data size 8bit
  */
 static const SPIConfig spiconf_max = {
-  FALSE,
-  NULL,
-  GPIOB,                                                   /*port of CS*/
-  GPIOB_PIN12,                                             /*pin of CS*/
-  0,                                                       /*CR1 register*/
-  SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0,              /*CR2 register*/
+  .circular         = false,
+  .slave            = false,
+  .data_cb          = NULL,
+  .error_cb         = NULL,
+  .ssport           = GPIOB,
+  .sspad            = GPIOB_PIN12,
+  .cr1              = 0,
+  .cr2              = SPI_CR2_DS_2 | SPI_CR2_DS_1 | SPI_CR2_DS_0
 };
 
 

@@ -11,4 +11,4 @@ For more information read the article "Using DHT11 with ChibiOS/RT".
 http://www.playembedded.org/blog/using-dht11-with-chibiosrt/
 
 *** ChibiOS related version ***
-Tested under ChibiOS Trunk r14595
+Tested under ChibiOS Trunk r15313

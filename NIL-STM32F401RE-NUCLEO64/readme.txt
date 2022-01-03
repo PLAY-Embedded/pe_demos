@@ -10,4 +10,4 @@ ChibiOS/NIL runs on STM32 Nucleo-64 F401RE.
 This demo comes as standalone, there is no article associated with it.
 
 *** ChibiOS related version ***
-Tested under ChibiOS Trunk r14595
+Tested under ChibiOS Trunk r15313
