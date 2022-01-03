@@ -9,6 +9,7 @@ articles. The version number refers to the associated ChibiOS release.
 *** Releases and Change Log                                               ***
 *****************************************************************************
 
-*** next release ***
-- Updated projects to be compliant with ChibiOS Trunk r15313.
-- Removed debug configuration from the demos.
+*** What's new ***
+
+- Updated makefile and configuration file to be compliant with ChibiOS 
+  21.11.1.

@@ -12,4 +12,4 @@ backpack with a STM32".
 http://www.playembedded.org/blog/hd44780-backpack-stm32/
 
 *** ChibiOS related version ***
-Tested under ChibiOS Trunk r15313
+Tested under ChibiOS 21.11.1

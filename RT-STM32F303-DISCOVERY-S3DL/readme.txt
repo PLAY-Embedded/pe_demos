@@ -11,4 +11,4 @@ Discovery board.
 This demo comes as standalone, there is no article associated with it.
 
 *** ChibiOS related version ***
-Tested under ChibiOS Trunk r15313
+Tested under ChibiOS 21.11.1
